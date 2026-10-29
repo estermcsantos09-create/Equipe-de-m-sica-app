@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Escala, equipes e avisos da Pastoral da Música da Paróquia Santa Luzia.">
+<meta name="theme-color" content="#B0122B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pastoral">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Pastoral Santa Luzia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: faixa vermelha de cabeçalho com a lamparina de Santa Luzia, abas fixas, lista de missas como "folheto" da escala */
+:root{
+  --vermelho:#B0122B; --vermelho-escuro:#7E0B1E; --vermelho-suave:#FBEDEF;
+  --fundo:#FFFFFF; --papel:#FFF9F8; --texto:#2A1417; --texto-2:#6E5559; --linha:#EED9DC;
+  --sobre-vermelho:#FFFFFF; --ouro:#C9993A; --ok:#2F7D4F; --ok-suave:#E7F3EC; --alerta:#B0122B;
+  --display:"Cinzel", "Trajan Pro", Georgia, serif;
+  --corpo:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --vermelho:#E0475E; --vermelho-escuro:#8E1426; --vermelho-suave:#3A1820;
+  --fundo:#1A0E11; --papel:#231418; --texto:#F6ECEE; --texto-2:#C4A9AE; --linha:#422830;
+  --sobre-vermelho:#FFFFFF; --ouro:#E1B861; --ok:#6CC594; --ok-suave:#173126; --alerta:#FF7F90; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --vermelho:#E0475E; --vermelho-escuro:#8E1426; --vermelho-suave:#3A1820;
+  --fundo:#1A0E11; --papel:#231418; --texto:#F6ECEE; --texto-2:#C4A9AE; --linha:#422830;
+  --sobre-vermelho:#FFFFFF; --ouro:#E1B861; --ok:#6CC594; --ok-suave:#173126; --alerta:#FF7F90; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--fundo);color:var(--texto);font-family:var(--corpo);font-size:16px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--vermelho-escuro)}
+.miolo{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:.02em}
+button,select,input{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ouro);outline-offset:2px}
+
+/* Cabeçalho */
+.topo{background:linear-gradient(160deg,var(--vermelho) 0%,var(--vermelho-escuro) 100%);color:var(--sobre-vermelho);position:relative;overflow:hidden}
+.topo .miolo{padding-block:22px 20px;display:flex;gap:16px;align-items:center}
+.topo::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 26px rgba(255,255,255,.05)}
+.emblema{flex:none;width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+.emblema svg{width:40px;height:40px}
+.topo .eyebrow{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;opacity:.85;font-weight:600}
+.topo h1{font-size:clamp(1.35rem,4.6vw,1.9rem);line-height:1.15;font-weight:700}
+.topo .festa{font-size:.9rem;opacity:.92;margin-top:2px}
+.sino{margin-left:auto;flex:none;position:relative;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;z-index:1}
+.sino svg{width:22px;height:22px}
+.sino .bolha{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#fff;color:#B0122B;font-weight:700;font-size:.8rem;display:grid;place-items:center}
+
+/* Abas */
+.abas{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--fundo);border-bottom:1px solid var(--linha)}
+.abas .miolo{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.aba{flex:1 0 auto;background:none;border:0;padding:14px 12px 12px;color:var(--texto-2);font-weight:600;border-bottom:3px solid transparent;white-space:nowrap}
+.aba[aria-selected="true"]{color:var(--vermelho);border-bottom-color:var(--vermelho)}
+.aba{display:flex;align-items:center;justify-content:center;gap:7px;position:relative}
+.aba-ic{display:none}.aba-ic svg{width:22px;height:22px}
+.aba .curto{display:none}
+.aba .cont{display:inline-block;margin-left:6px;background:var(--vermelho);color:#fff;border-radius:10px;font-size:.72rem;padding:0 7px;line-height:18px;vertical-align:1px}
+
+main .miolo{padding-block:20px 48px;display:flex;flex-direction:column;gap:20px}
+.secao-titulo{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.secao-titulo h2{font-size:1.25rem;color:var(--vermelho)}
+.sub{color:var(--texto-2);font-size:.92rem}
+
+.faixa{border-radius:10px;padding:12px 14px;font-size:.92rem;background:var(--vermelho-suave);color:var(--texto);border:1px solid var(--linha)}
+.faixa strong{color:var(--vermelho)}
+
+/* Seletor da minha equipe */
+.minha{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--papel);border:1px solid var(--linha);border-radius:12px;padding:12px 14px}
+.minha label{font-weight:600}
+select,input[type=text],input[type=date],input[type=time]{background:var(--fundo);color:var(--texto);border:1px solid var(--linha);border-radius:8px;padding:9px 10px;min-width:0}
+.minha select{flex:1 1 200px}
+
+/* Escala */
+.semana h3{font-family:var(--corpo);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-2);font-weight:700;margin:6px 0 8px}
+.lista{display:flex;flex-direction:column;border-top:1px solid var(--linha)}
+.missa{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--linha);align-items:start}
+.data{text-align:center;border:1px solid var(--linha);border-radius:10px;padding:6px 0 7px;background:var(--papel);font-variant-numeric:tabular-nums}
+.data .dia{font-family:var(--display);font-size:1.5rem;line-height:1;font-weight:700;color:var(--vermelho)}
+.data .sem{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--texto-2);font-weight:700}
+.info{min-width:0;display:flex;flex-direction:column;gap:6px}
+.linha1{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.hora{font-weight:700;font-variant-numeric:tabular-nums}
+.nome{color:var(--texto-2)}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:600;width:fit-content;max-width:100%}
+.chip.ok{background:var(--ok-suave);color:var(--ok)}
+.chip.vazia{background:var(--vermelho);color:#fff}
+.chip.minha-eq{background:var(--ouro);color:#2A1417}
+.chip .ponto{width:8px;height:8px;border-radius:50%;background:currentColor}
+.missa.destaque{background:linear-gradient(90deg,var(--vermelho-suave),transparent 70%);border-radius:0}
+.festa-tag{font-size:.75rem;font-weight:700;color:var(--ouro);letter-spacing:.08em;text-transform:uppercase}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ctrl select{flex:1 1 200px}
+.obs{font-size:.88rem;color:var(--texto-2)}
+
+/* Botões */
+.btn{border:1px solid var(--vermelho);background:var(--vermelho);color:#fff;border-radius:999px;padding:9px 16px;font-weight:600}
+.btn.sec{background:transparent;color:var(--vermelho)}
+.btn.peq{padding:6px 12px;font-size:.86rem}
+.btn.fantasma{border-color:var(--linha);background:transparent;color:var(--texto-2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Avisos */
+.avisos{display:flex;flex-direction:column;gap:10px}
+.aviso{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--linha);background:var(--papel)}
+.aviso .ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700}
+.aviso.urgente{border-color:var(--vermelho)}
+.aviso.urgente .ic{background:var(--vermelho);color:#fff}
+.aviso.minha .ic{background:var(--ouro);color:#2A1417}
+.aviso.info .ic{background:var(--ok-suave);color:var(--ok)}
+.aviso .tit{font-weight:700}
+.aviso .det{color:var(--texto-2);font-size:.9rem}
+.aviso svg{width:18px;height:18px}
+
+/* Equipes */
+.equipes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.equipe{border:1px solid var(--linha);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;background:var(--fundo)}
+.equipe h3{font-size:1.02rem;color:var(--texto)}
+.equipe .meta{font-size:.9rem;color:var(--texto-2)}
+.equipe .prox{font-size:.88rem}
+.equipe .acoes{margin-top:auto;padding-top:6px;display:flex;gap:8px}
+
+/* Coordenação */
+.painel{border:1px solid var(--linha);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--papel)}
+.painel h3{font-size:1.05rem;color:var(--vermelho)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+.campo{display:flex;flex-direction:column;gap:4px;min-width:0}
+.campo span{font-size:.8rem;font-weight:600;color:var(--texto-2);letter-spacing:.04em}
+.horarios{display:flex;flex-wrap:wrap;gap:8px}
+.horario{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--linha);background:var(--fundo);border-radius:999px;padding:4px 6px 4px 12px;font-size:.9rem}
+.horario button{border:0;background:var(--vermelho-suave);color:var(--vermelho);width:24px;height:24px;border-radius:50%;line-height:1}
+.resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.num{border:1px solid var(--linha);border-radius:12px;padding:12px;background:var(--fundo)}
+.num b{display:block;font-family:var(--display);font-size:1.6rem;color:var(--vermelho);font-variant-numeric:tabular-nums;line-height:1.1}
+.num span{font-size:.82rem;color:var(--texto-2)}
+
+.vazio{text-align:center;padding:28px 16px;border:1px dashed var(--linha);border-radius:14px;color:var(--texto-2);display:flex;flex-direction:column;gap:10px;align-items:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--texto);color:var(--fundo);padding:10px 18px;border-radius:999px;font-weight:600;z-index:20;max-width:calc(100% - 32px)}
+textarea.copia{width:100%;min-height:160px;border:1px solid var(--linha);border-radius:8px;padding:10px;background:var(--fundo);color:var(--texto);font:inherit;font-size:.9rem}
+/* Frase do dia */
+.frase{position:relative;border-radius:14px;padding:22px 20px 16px 22px;background:var(--papel);border:1px solid var(--linha);overflow:hidden}
+.frase::before{content:"\201C";position:absolute;left:10px;top:-18px;font-family:"Cormorant Garamond",Georgia,serif;font-size:7rem;line-height:1;color:var(--vermelho);opacity:.14}
+.frase .rot{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ouro);font-weight:700;display:flex;align-items:center;gap:8px}
+.frase .rot::after{content:"";flex:1;height:1px;background:var(--linha)}
+.frase blockquote{margin:10px 0 8px;font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(1.25rem,4.2vw,1.5rem);line-height:1.3;color:var(--texto);text-wrap:pretty}
+.frase .autor{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.frase cite{font-style:normal;font-weight:700;color:var(--vermelho);font-size:.92rem}
+.frase cite small{display:block;font-weight:400;color:var(--texto-2);font-size:.8rem}
+.frase.mini{padding:14px 16px}.frase.mini blockquote{font-size:1.15rem;margin:6px 0}
+.cecilia{background:linear-gradient(135deg,var(--vermelho),var(--vermelho-escuro));color:#fff;border-radius:14px;padding:14px 16px}
+.cecilia strong{font-family:var(--display);display:block;font-size:1.05rem}
+
+/* PIN */
+.cadeado{max-width:360px;margin:12px auto 0;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;padding:26px 20px;border:1px solid var(--linha);border-radius:18px;background:var(--papel)}
+.cadeado .icone{width:56px;height:56px;border-radius:50%;background:var(--vermelho);color:#fff;display:grid;place-items:center}
+.cadeado .icone svg{width:26px;height:26px}
+.cadeado h2{font-size:1.2rem;color:var(--vermelho)}
+.pontos{display:flex;gap:12px;justify-content:center;min-height:18px}
+.pontos i{width:14px;height:14px;border-radius:50%;border:2px solid var(--vermelho)}
+.pontos i.on{background:var(--vermelho)}
+.pontos.erro{animation:treme .35s}
+@keyframes treme{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.teclado{display:grid;grid-template-columns:repeat(3,64px);gap:10px;justify-content:center}
+.tecla{width:64px;height:64px;border-radius:50%;border:1px solid var(--linha);background:var(--fundo);color:var(--texto);font-size:1.4rem;font-weight:600;font-variant-numeric:tabular-nums}
+.tecla:active{background:var(--vermelho-suave)}
+.tecla.txt{font-size:.85rem;color:var(--texto-2)}
+.msg-pin{font-size:.9rem;color:var(--texto-2);min-height:1.4em}
+.msg-pin.erro{color:var(--alerta);font-weight:600}
+.dica{font-size:.82rem;color:var(--texto-2)}
+/* Montar escala: calendário */
+.montar{border:1px solid var(--linha);border-radius:18px;overflow:hidden;background:var(--fundo)}
+.montar-topo{background:linear-gradient(160deg,var(--vermelho),var(--vermelho-escuro));color:#fff;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
+.montar-topo h3{color:#fff;font-size:1.15rem;flex:1}
+.montar-topo .sub{color:rgba(255,255,255,.85)}
+.cal{padding:14px 14px 10px}
+.cal-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.cal-cab .mes{font-family:var(--display);font-size:1.2rem;font-weight:700;color:var(--vermelho);text-transform:capitalize;letter-spacing:.04em}
+.cal-cab .ano{font-family:var(--corpo);font-weight:500;color:var(--texto-2);font-size:.95rem;margin-left:6px}
+.seta{width:38px;height:38px;border-radius:50%;border:1px solid var(--linha);background:var(--papel);color:var(--vermelho);font-size:1.1rem;display:grid;place-items:center}
+.cal-grade{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-sem{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--texto-2);padding:4px 0}
+.cal-sem.dom{color:var(--vermelho)}
+.dia-cal{position:relative;aspect-ratio:1/1;max-width:100%;border:1px solid transparent;border-radius:12px;background:var(--papel);color:var(--texto);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-weight:600;font-variant-numeric:tabular-nums;padding:0;font-size:.98rem}
+.dia-cal.fora{visibility:hidden}
+.dia-cal.passado{opacity:.4}
+.dia-cal.domingo{color:var(--vermelho)}
+.dia-cal.hoje{border-color:var(--vermelho)}
+.dia-cal.sel{background:var(--vermelho);color:#fff;box-shadow:0 4px 12px -4px var(--vermelho)}
+.dia-cal .marcas{display:flex;gap:3px;height:6px}
+.dia-cal .marcas i{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.dia-cal .marcas i.vazia{background:var(--vermelho)}
+.dia-cal.sel .marcas i{background:#fff}
+.dia-cal.sel .marcas i.vazia{background:var(--ouro)}
+.dia-cal .festa-ic{position:absolute;top:3px;right:5px;font-size:.62rem;color:var(--ouro)}
+.dia-cal.sel .festa-ic{color:#FFE7A8}
+.legenda{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--texto-2);padding:8px 2px 0}
+.legenda span{display:inline-flex;align-items:center;gap:6px}
+.legenda i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.passos{border-top:1px solid var(--linha);padding:16px 16px 18px;display:flex;flex-direction:column;gap:16px;background:var(--papel)}
+.passo-tit{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--texto-2);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.passo-tit b{width:20px;height:20px;border-radius:50%;background:var(--vermelho);color:#fff;display:inline-grid;place-items:center;font-size:.72rem;letter-spacing:0}
+.dia-escolhido{font-family:var(--display);font-size:1.15rem;color:var(--texto);text-transform:capitalize}
+.opcoes{display:flex;flex-wrap:wrap;gap:8px}
+.opcao{border:1.5px solid var(--linha);background:var(--fundo);color:var(--texto);border-radius:12px;padding:8px 14px;text-align:left;display:flex;flex-direction:column;gap:1px;min-width:0}
+.opcao b{font-size:1rem;font-variant-numeric:tabular-nums}
+.opcao small{color:var(--texto-2);font-size:.78rem}
+.opcao[aria-pressed="true"]{border-color:var(--vermelho);background:var(--vermelho-suave);box-shadow:inset 0 0 0 1px var(--vermelho)}
+.opcao[aria-pressed="true"] b{color:var(--vermelho)}
+.opcao.ocupada small{color:var(--ok);font-weight:600}
+.opcao.equipe-op{flex:1 1 180px}
+.sugestoes{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sugestoes button{border:1px solid var(--linha);background:var(--fundo);color:var(--texto-2);border-radius:999px;padding:4px 11px;font-size:.84rem}
+.celebracao{width:100%}
+.no-dia{display:flex;flex-direction:column;gap:6px}
+.no-dia .item{display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--fundo);border:1px solid var(--linha);border-radius:10px;padding:8px 10px;flex-wrap:wrap}
+.no-dia .item .txt{min-width:0}
+.salvar-linha{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.instalar-banner{display:flex;align-items:center;gap:12px;background:var(--vermelho-suave);border:1px solid var(--linha);border-radius:14px;padding:12px 14px}
+.instalar-banner .txt{flex:1;min-width:0;font-size:.92rem}
+.instalar-banner .x{border:0;background:none;color:var(--texto-2);font-size:1.3rem;line-height:1;padding:4px 6px}
+.guia{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.aparelho{border:1px solid var(--linha);border-radius:16px;padding:16px;background:var(--fundo);display:flex;flex-direction:column;gap:10px}
+.aparelho.seu{border-color:var(--vermelho);box-shadow:0 0 0 1px var(--vermelho)}
+.aparelho h3{font-size:1.05rem;color:var(--vermelho);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.aparelho .tag{font-family:var(--corpo);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:var(--vermelho);color:#fff;border-radius:999px;padding:2px 9px}
+.aparelho ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.94rem}
+.aparelho .ic-ap{width:42px;height:42px;border-radius:12px;background:var(--vermelho-suave);color:var(--vermelho);display:grid;place-items:center}
+.aparelho .ic-ap svg{width:24px;height:24px}
+.kbd{display:inline-block;border:1px solid var(--linha);border-bottom-width:2px;border-radius:6px;padding:0 6px;font-size:.85em;background:var(--papel);font-weight:600}
+
+/* ===== Celular: barra de abas embaixo, como app ===== */
+@media (max-width:720px){
+  body{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+  .abas{position:fixed;top:auto;bottom:0;left:0;right:0;border-bottom:0;border-top:1px solid var(--linha);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -6px 20px -12px rgba(0,0,0,.25)}
+  .abas .miolo{gap:0;overflow:visible}
+  .aba{flex:1 1 0;flex-direction:column;gap:2px;padding:8px 2px 7px;border-bottom:0;border-top:3px solid transparent;font-size:.72rem;min-width:0}
+  .aba[aria-selected="true"]{border-top-color:var(--vermelho)}
+  .aba-ic{display:block;height:22px}
+  .aba .longo{display:none}.aba .curto{display:inline}
+  .aba .cont{position:absolute;top:4px;left:calc(50% + 6px);margin:0}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+/* ===== Notebook: menu lateral e conteúdo largo ===== */
+@media (min-width:960px){
+  .topo .miolo,.rodape{max-width:1180px}
+  .app{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:232px minmax(0,1fr);gap:28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .abas{border-bottom:0;background:transparent;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;margin-top:20px}
+  .abas .miolo{flex-direction:column;gap:4px;padding:0;max-width:none;overflow:visible}
+  .aba{justify-content:flex-start;border-bottom:0;border-left:3px solid transparent;border-radius:0 10px 10px 0;padding:11px 14px;font-size:.98rem}
+  .aba:hover{background:var(--papel)}
+  .aba[aria-selected="true"]{border-left-color:var(--vermelho);background:var(--vermelho-suave)}
+  .aba-ic{display:block;height:22px}
+  .aba .cont{margin-left:auto}
+  main .miolo{padding:20px 0 56px;max-width:none}
+  .montar{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+  .montar-topo{grid-column:1/-1}
+  .passos{border-top:0;border-left:1px solid var(--linha)}
+  .lista{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+  .equipes{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+}
+.btn.wa,.mini-link.wa{--wa:#1F8F4E}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn svg,.mini-link svg{width:16px;height:16px;flex:none}
+.mini-acoes{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:2px}
+.mini-link{display:inline-flex;align-items:center;gap:5px;font-size:.86rem;font-weight:600;color:var(--vermelho);text-decoration:none;padding:2px 0}
+.mini-link:hover{text-decoration:underline}
+.mini-link.wa{color:var(--wa)}
+:root[data-theme="dark"] .mini-link.wa{--wa:#5BD38C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mini-link.wa{--wa:#5BD38C}}
+.lembretes{border:1px solid var(--linha);border-radius:14px;padding:14px;background:var(--papel);display:flex;flex-direction:column;gap:12px}
+.lemb-cab{display:flex;gap:12px;align-items:flex-start}
+.lemb-cab h3{font-size:1.02rem;color:var(--vermelho)}
+.lemb-cab .ic-ap{flex:none;width:40px;height:40px;border-radius:12px;background:var(--vermelho-suave);color:var(--vermelho);display:grid;place-items:center}
+.lemb-cab .ic-ap svg{width:22px;height:22px}
+.lemb-lista{display:flex;flex-direction:column;gap:8px}
+.lemb-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--fundo);border:1px solid var(--linha);border-radius:10px;padding:8px 10px}
+.lemb-item .txt{min-width:0;display:flex;flex-direction:column}
+.lemb-item .txt span{color:var(--texto-2);font-size:.88rem}
+.seg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.seg li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.seg li span:not(.marca-seg){display:block;color:var(--texto-2);font-size:.88rem}
+.marca-seg{width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
+.marca-seg svg{width:16px;height:16px}
+.seg li.ok .marca-seg{background:var(--ok-suave);color:var(--ok)}
+.seg li.pend .marca-seg{background:var(--vermelho-suave);color:var(--vermelho)}
+.banner-ic{border-radius:10px;flex:none}
+.aba-instalar .aba-ic,.aba-instalar{color:var(--vermelho)}
+.folha{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center}
+.folha-fundo{position:absolute;inset:0;background:rgba(30,6,10,.55)}
+.folha-caixa{position:relative;background:var(--fundo);color:var(--texto);width:100%;max-width:440px;border-radius:20px 20px 0 0;padding:22px max(20px,env(safe-area-inset-left,0px)) calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+.folha-corpo{display:flex;flex-direction:column;gap:12px}
+.folha-corpo h3{font-size:1.15rem;color:var(--vermelho);padding-right:36px}
+.folha-corpo p{margin:0}
+.folha-fechar{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:var(--vermelho-suave);color:var(--vermelho);font-size:1.3rem;line-height:1}
+.passos-ios{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.passos-ios li{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.passos-ios .n{width:26px;height:26px;border-radius:50%;background:var(--vermelho);color:#fff;display:inline-grid;place-items:center;font-weight:700;flex:none}
+.ic-share{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--vermelho-suave);color:#0A7AFF}
+.ic-share svg{width:18px;height:18px}
+.seta-baixo{text-align:center;font-size:1.8rem;color:var(--vermelho);animation:pula 1.2s infinite}
+@keyframes pula{50%{transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.seta-baixo{animation:none}}
+@media (min-width:721px){.folha{align-items:center}.folha-caixa{border-radius:20px}.seta-baixo{display:none}}
+.form-login{display:flex;flex-direction:column;gap:10px;width:100%;text-align:left}
+.form-login input{width:100%}
+.rodape{text-align:center;color:var(--texto-2);font-size:.82rem;padding-block:0 30px;display:flex;flex-direction:column;gap:10px}
+.rodape p{margin:0}
+.assinatura{border-top:1px solid var(--linha);padding-top:14px;line-height:1.6}
+.assinatura strong{color:var(--texto)}
+.assinatura .marca{font-family:var(--display);color:var(--vermelho);letter-spacing:.06em;font-weight:700}
+.assinatura .sel-ass{color:var(--ouro)}
+.assinatura .insta{font-size:.78rem}
+.tema{margin-left:auto;flex:none;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;height:46px;border-radius:23px;padding:0 14px;display:flex;align-items:center;gap:6px;font-weight:600;font-size:.85rem;z-index:1}
+.tema svg{width:18px;height:18px}
+.tema + .sino{margin-left:0}
+@media (max-width:480px){.emblema{width:48px;height:48px}.emblema svg{width:30px;height:30px}.topo .miolo{gap:10px}.tema span{display:none}.tema{padding:0 13px}.resumo{grid-template-columns:1fr 1fr 1fr}.num b{font-size:1.3rem}}
+@media (prefers-reduced-motion:no-preference){.aba,.btn{transition:color .15s,background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="miolo">
+    <div class="emblema" aria-hidden="true">
+      <!-- Lamparina acesa: símbolo de Santa Luzia, a santa da luz -->
+      <svg viewBox="0 0 40 40"><path d="M20 5c3 4.5 5 7.4 5 10.2A5 5 0 0 1 20 20a5 5 0 0 1-5-4.8C15 12.4 17 9.5 20 5z" fill="#C9993A"/><path d="M20 10.5c1.5 2.3 2.4 3.8 2.4 5.1a2.4 2.4 0 0 1-4.8 0c0-1.3.9-2.8 2.4-5.1z" fill="#FFE7A8"/><path d="M6 24h28c-1.2 5.6-6.6 9-14 9S7.2 29.6 6 24z" fill="#B0122B"/><path d="M30 25.5c3 0 5-1 5.5-3" stroke="#B0122B" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="13" y="33" width="14" height="3" rx="1.5" fill="#7E0B1E"/></svg>
+    </div>
+    <div>
+      <div class="eyebrow">Pastoral da Música</div>
+      <h1>Paróquia Santa Luzia</h1>
+      <div class="festa" id="festa"></div>
+    </div>
+    <button class="tema" id="btnTema" aria-label="Mudar tema"></button>
+    <button class="sino" id="btnSino" aria-label="Ver avisos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <span class="bolha" id="bolha" hidden></span>
+    </button>
+  </div>
+</header>
+
+<div class="app">
+<nav class="abas" aria-label="Seções">
+  <div class="miolo" role="tablist">
+    <button class="aba" role="tab" data-aba="escala" aria-selected="true"><span class="aba-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span><span class="aba-txt"><span class="longo">Escala</span><span class="curto">Escala</span></span></button>
+    <button class="aba" role="tab" data-aba="avisos" aria-selected="false"><span class="aba-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span><span class="aba-txt"><span class="longo">Avisos</span><span class="curto">Avisos</span></span><span class="cont" id="contAvisos" hidden></span></button>
+    <button class="aba" role="tab" data-aba="equipes" aria-selected="false"><span class="aba-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="aba-txt"><span class="longo">Equipes</span><span class="curto">Equipes</span></span></button>
+    <button class="aba" role="tab" data-aba="coord" aria-selected="false"><span class="aba-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="aba-txt"><span class="longo">Coordenação</span><span class="curto">Coord.</span></span></button>
+    <button class="aba aba-instalar" id="abaInstalar" data-acao="instalar"><span class="aba-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3M10 18h4"/></svg></span><span class="aba-txt"><span class="longo">Instalar o app</span><span class="curto">Instalar</span></span></button>
+  </div>
+</nav>
+
+<main><div class="miolo" id="conteudo"></div></main>
+</div>
+<footer class="rodape miolo">
+  <p class="prece">Santa Luzia, rogai por nós · Festa em 13 de dezembro</p>
+  <p class="assinatura"><span class="sel-ass" aria-hidden="true">✦</span> Criado por <span class="marca">Stllrts Designs</span><br><span class="insta">@stllrtsdesigns</span></p>
+</footer>
+<div class="toast" id="toast" hidden></div>
+<div class="folha" id="folha" hidden role="dialog" aria-modal="true" aria-label="Instalar o app">
+  <div class="folha-fundo" data-acao="fechar-folha"></div>
+  <div class="folha-caixa"><button class="folha-fechar" data-acao="fechar-folha" aria-label="Fechar">×</button><div class="folha-corpo"></div></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(function(){
+"use strict";
+const DIAS=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const DIAS_LONGOS=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+const MESES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+
+const estado={
+  aba:"escala", modo:"carregando", // carregando | demo | online
+  podeEditar:false, equipes:[], missas:[], horarios:[],
+  minhaEquipe:"", mostrarCopia:false,
+  pinHash:null, pinCarregado:false, desbloqueado:false, digitado:"", novoPin:"", etapaPin:"", msgPin:"", erroPin:false,
+  pinSal:"", pinVer:1, contatos:{}, usuario:null, msgLogin:"", entrando:false, conferindo:false, fraseIdx:null,
+  calMes:"", calDia:"", selHora:"", horaLivre:false, selEquipe:"", celebracao:""
+};
+let db=null;
+
+/* ---------- validação (tudo que vem do banco é tratado como não confiável) ---------- */
+const txt=(v,n)=>(typeof v==="string"?v:"").replace(/[\u0000-\u001f]/g," ").trim().slice(0,n);
+const DATA_RE=/^\d{4}-\d{2}-\d{2}$/, HORA_RE=/^([01]\d|2[0-3]):[0-5]\d$/;
+function limpaEquipe(id,d){if(!d)return null;const nome=txt(d.nome,60);if(!nome)return null;return{id,nome,responsavel:txt(d.responsavel,60),contato:txt(d.contato,20)}}
+function limpaMissa(id,d){if(!d||!DATA_RE.test(d.data)||!HORA_RE.test(d.hora))return null;return{id,data:d.data,hora:d.hora,nome:txt(d.nome,80)||"Santa Missa",equipeId:txt(d.equipeId,80),obs:txt(d.obs,120)}}
+function limpaHorario(h){if(!h||!HORA_RE.test(h.hora))return null;const dia=Number(h.dia);if(!(dia>=0&&dia<=6))return null;return{dia,hora:h.hora,nome:txt(h.nome,60)||"Santa Missa"}}
+
+/* ---------- WhatsApp e agenda ---------- */
+function contatoDe(e){return e?(estado.contatos[e.id]||e.contato||""):""}
+function foneWa(c){let d=String(c||"").replace(/\D/g,"");if(d.length===10||d.length===11)d="55"+d;return d.length>=12&&d.length<=13?d:""}
+function linkWa(texto,fone){return"https://wa.me/"+(fone||"")+"?text="+encodeURIComponent(texto)}
+function dataBR(s){const d=parse(s);return DIAS_LONGOS[d.getDay()]+", "+d.getDate()+"/"+String(d.getMonth()+1).padStart(2,"0")}
+function msgEquipe(m,eq){return"🎶 Olá"+(eq&&eq.responsavel?", "+eq.responsavel:"")+"! Lembrete da Pastoral da Música – Paróquia Santa Luzia:\n\n*"+(eq?eq.nome:"Sua equipe")+"* está escalada para *"+m.nome+"*\n📅 "+dataBR(m.data)+" às "+m.hora+"\n\nPode confirmar? Santa Luzia, rogai por nós! 🕯️"}
+function msgPedido(m){return"🙏 *Pastoral da Música – Paróquia Santa Luzia*\n\nAinda não temos músicos para:\n*"+m.nome+"*\n📅 "+dataBR(m.data)+" às "+m.hora+"\n\nAlguma equipe pode servir? Responda aqui para a coordenação. 🎶"}
+function linkAgenda(m){
+  const ini=m.data.replace(/-/g,"")+"T"+m.hora.replace(":","")+"00";
+  const d=parse(m.data);const[hh,mm]=m.hora.split(":").map(Number);d.setHours(hh+1,mm);
+  const fim=iso(d).replace(/-/g,"")+"T"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+"00";
+  const eq=equipe(m.equipeId);
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("🎶 "+m.nome+(eq?" – "+eq.nome:""))+"&dates="+ini+"/"+fim+"&ctz=America/Sao_Paulo&location="+encodeURIComponent("Paróquia Santa Luzia")+"&details="+encodeURIComponent("Escala da Pastoral da Música. Chegar com antecedência para o ensaio.");
+}
+const IC_WA='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3a.5.5 0 0 0 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3z"/></svg>';
+const IC_CAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"/></svg>';
+const aLink=(href,cls,html,label)=>'<a class="'+cls+'" href="'+esc(href)+'" target="_blank" rel="noopener noreferrer"'+(label?' aria-label="'+esc(label)+'"':"")+'>'+html+'</a>';
+
+/* ---------- frases dos santos ---------- */
+const FRASES=[
+  {t:"Quem canta reza duas vezes.",a:"Santo Agostinho",o:"atribuída pela tradição"},
+  {t:"Nada te perturbe, nada te espante; tudo passa, Deus não muda. A paciência tudo alcança. Quem a Deus tem, nada lhe falta: só Deus basta.",a:"Santa Teresa d'Ávila",o:"Doutora da Igreja"},
+  {t:"Fizeste-nos para ti, Senhor, e inquieto está o nosso coração enquanto não repousa em ti.",a:"Santo Agostinho",o:"Confissões"},
+  {t:"Para mim, a oração é um impulso do coração, um simples olhar lançado ao céu.",a:"Santa Teresinha do Menino Jesus",o:"História de uma Alma"},
+  {t:"Não tenhais medo! Abri, ou melhor, escancarai as portas a Cristo!",a:"São João Paulo II",o:"homilia de início do pontificado, 1978"},
+  {t:"Reze, espere e não se preocupe.",a:"São Pio de Pietrelcina",o:"Padre Pio"},
+  {t:"Se fordes o que deveis ser, incendiareis o mundo inteiro.",a:"Santa Catarina de Sena",o:"Doutora da Igreja"},
+  {t:"Servi o Senhor na alegria.",a:"São João Bosco",o:"lema tirado do Salmo 100"},
+  {t:"Os que vivem com pureza e piedade são templo do Espírito Santo.",a:"Santa Luzia",o:"padroeira da paróquia, segundo a tradição de seu martírio"},
+  {t:"Fazei tudo por amor, nada por força.",a:"São Francisco de Sales",o:"Doutor da Igreja"},
+  {t:"Tudo posso naquele que me fortalece.",a:"São Paulo Apóstolo",o:"Filipenses 4,13"},
+  {t:"Cantai ao Senhor um canto novo, porque ele fez maravilhas.",a:"Rei Davi",o:"Salmo 98,1"}
+];
+function fraseDoDia(){
+  if(estado.fraseIdx===null){const d=parse(hojeISO());const n=Math.floor(d.getTime()/864e5);estado.fraseIdx=((n%FRASES.length)+FRASES.length)%FRASES.length}
+  return FRASES[estado.fraseIdx];
+}
+function blocoFrase(mini){
+  const f=fraseDoDia();
+  return'<figure class="frase'+(mini?" mini":"")+'" style="margin:0"><div class="rot">Palavra dos santos</div><blockquote>'+esc(f.t)+'</blockquote><figcaption class="autor"><cite>'+esc(f.a)+'<small>'+esc(f.o)+'</small></cite>'+(mini?"":'<button class="btn fantasma peq" data-acao="outra-frase">Outra frase</button>')+'</figcaption></figure>';
+}
+function blocoCecilia(){
+  // 22 de novembro: Santa Cecília, padroeira dos músicos
+  const n=diffDias(hojeISO().slice(0,4)+"-11-22");
+  if(n<0||n>7)return"";
+  return'<div class="cecilia"><strong>'+(n===0?"Hoje é dia de Santa Cecília":"Dia de Santa Cecília em "+n+(n===1?" dia":" dias"))+'</strong>Padroeira dos músicos. Santa Cecília, rogai pela nossa pastoral!</div>';
+}
+
+/* ---------- PIN da coordenação ---------- */
+const PIN_DEMO="1234";
+const INATIVIDADE_MIN=10;
+function hex(buf){return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("")}
+async function hashPin(pin){ // formato antigo (v1), só para converter PINs já criados
+  try{return hex(await crypto.subtle.digest("SHA-256",new TextEncoder().encode("santa-luzia-pastoral:"+pin)))}
+  catch(e){let h=0;const s="santa-luzia-pastoral:"+pin;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return"x"+h}
+}
+async function derivarPin(pin,sal){ // v2: PBKDF2 com sal aleatório e 150 mil iterações
+  const enc=new TextEncoder();
+  const chave=await crypto.subtle.importKey("raw",enc.encode(pin),"PBKDF2",false,["deriveBits"]);
+  return hex(await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(sal),iterations:150000,hash:"SHA-256"},chave,256));
+}
+function novoSal(){const a=new Uint8Array(16);crypto.getRandomValues(a);return hex(a.buffer)}
+function ssGet(k){try{return sessionStorage.getItem(k)||""}catch(e){return""}}
+function ssSet(k,v){try{v?sessionStorage.setItem(k,v):sessionStorage.removeItem(k)}catch(e){}}
+const coordAtiva=()=>estado.podeEditar&&estado.desbloqueado;
+let ultimaAtividade=Date.now();
+function liberar(msg){estado.desbloqueado=true;estado.digitado="";estado.msgPin="";ultimaAtividade=Date.now();ssSet("pastoral-coord",String(Date.now()));lsSet("pastoral-pin-falhas","0");lsSet("pastoral-pin-ate","0");toast(msg);render()}
+async function gravarPin(pin){
+  const sal=novoSal();const hash=await derivarPin(pin,sal);
+  if(db)await db.doc("seguranca/pin").set({hash,sal,v:2});
+  estado.pinHash=hash;estado.pinSal=sal;estado.pinVer=2;
+}
+async function conferePin(pin){
+  if(estado.pinVer===2)return(await derivarPin(pin,estado.pinSal))===estado.pinHash;
+  return(await hashPin(pin))===estado.pinHash;
+}
+function esperaRestante(){return Math.max(0,Number(lsGet("pastoral-pin-ate")||0)-Date.now())}
+function fmtEspera(ms){const s=Math.ceil(ms/1000);return s>=60?Math.ceil(s/60)+" min":s+" s"}
+
+async function teclaPin(v){
+  const espera=esperaRestante();
+  if(espera){estado.msgPin="Muitas tentativas erradas. Aguarde "+fmtEspera(espera)+".";estado.erroPin=true;estado.digitado="";return render()}
+  if(v==="apagar"){estado.digitado=estado.digitado.slice(0,-1);estado.erroPin=false;estado.msgPin="";return render()}
+  if(estado.digitado.length>=4||estado.conferindo)return;
+  estado.digitado+=v;estado.erroPin=false;
+  if(estado.digitado.length<4)return render();
+  const pin=estado.digitado;
+  if(estado.etapaPin==="criar"){
+    if(/^(\d)\1{3}$/.test(pin)||["1234","4321","0123","9876"].includes(pin)){estado.digitado="";estado.msgPin="Esse PIN é fácil de adivinhar. Escolha outro.";estado.erroPin=true;return render()}
+    estado.novoPin=pin;estado.etapaPin="confirmar";estado.digitado="";estado.msgPin="Digite o mesmo PIN de novo para confirmar.";return render()}
+  estado.conferindo=true;estado.msgPin="Conferindo…";render();
+  try{
+    if(estado.etapaPin==="confirmar"){
+      if(pin!==estado.novoPin){estado.etapaPin="criar";estado.novoPin="";estado.digitado="";estado.msgPin="Os PINs não conferem. Comece de novo.";estado.erroPin=true;return render()}
+      try{await gravarPin(pin)}catch(e){estado.digitado="";estado.msgPin="Não foi possível salvar o PIN. Tente de novo.";estado.erroPin=true;return render()}
+      estado.etapaPin="";estado.novoPin="";return liberar("PIN salvo. Coordenação liberada.");
+    }
+    if(await conferePin(pin)){
+      if(estado.pinVer!==2&&db){try{await gravarPin(pin)}catch(e){}} // converte PIN antigo para a proteção nova
+      return liberar("Bem-vindo(a), coordenação!");
+    }
+    const falhas=Number(lsGet("pastoral-pin-falhas")||0)+1;lsSet("pastoral-pin-falhas",String(falhas));
+    estado.digitado="";estado.erroPin=true;
+    if(falhas>=5){const ms=Math.min(15*60000,30000*Math.pow(2,falhas-5));lsSet("pastoral-pin-ate",String(Date.now()+ms));estado.msgPin="PIN incorreto. Aguarde "+fmtEspera(ms)+" para tentar de novo."}
+    else estado.msgPin="PIN incorreto. Restam "+(5-falhas)+" tentativa"+(5-falhas===1?"":"s")+" antes de uma pausa.";
+    render();
+  }finally{estado.conferindo=false}
+}
+function bloquear(motivo){estado.desbloqueado=false;estado.digitado="";estado.msgPin="";ssSet("pastoral-coord","");render();toast(motivo||"Coordenação bloqueada")}
+// bloqueio automático por inatividade
+["click","keydown","input","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{ultimaAtividade=Date.now();if(estado.desbloqueado)ssSet("pastoral-coord",String(Date.now()))},{passive:true}));
+setInterval(()=>{if(estado.desbloqueado&&Date.now()-ultimaAtividade>INATIVIDADE_MIN*60000)bloquear("Coordenação bloqueada por inatividade")},30000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&estado.desbloqueado&&Date.now()-ultimaAtividade>INATIVIDADE_MIN*60000)bloquear("Coordenação bloqueada por inatividade")});
+
+function telaPin(){
+  const ic='<div class="icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>';
+  if(!estado.podeEditar)return estado.modo==="online"?telaLogin(ic):'<div class="cadeado">'+ic+'<h2>Área do coordenador</h2><p class="sub" style="margin:0">Esta área é só para a coordenação da pastoral. Você acompanha a escala e recebe os avisos nas outras abas.</p></div>';
+  if(!estado.pinCarregado)return'<div class="vazio">Verificando acesso…</div>';
+  if(!estado.pinHash&&!estado.etapaPin)estado.etapaPin="criar";
+  const titulo=estado.etapaPin==="criar"?"Crie o PIN da coordenação":estado.etapaPin==="confirmar"?"Confirme o PIN":"Digite o PIN da coordenação";
+  const msg=estado.msgPin||(estado.etapaPin==="criar"?"Escolha 4 números. Só quem souber o PIN abre esta área.":"Área restrita ao coordenador da escala.");
+  const teclas=["1","2","3","4","5","6","7","8","9","","0","apagar"].map(k=>k===""?"<span></span>":'<button class="tecla'+(k==="apagar"?" txt":"")+'" data-pin="'+k+'" aria-label="'+(k==="apagar"?"Apagar":k)+'">'+(k==="apagar"?"apagar":k)+'</button>').join("");
+  return'<div class="cadeado">'+ic+'<h2>'+titulo+'</h2><div class="pontos'+(estado.erroPin?" erro":"")+'" aria-label="'+estado.digitado.length+' de 4 dígitos">'+[0,1,2,3].map(i=>'<i class="'+(i<estado.digitado.length?"on":"")+'"></i>').join("")+'</div>'+
+    '<div class="msg-pin'+(estado.erroPin?" erro":"")+'" role="status">'+esc(msg)+'</div><div class="teclado">'+teclas+'</div>'+
+    (estado.modo==="demo"&&estado.etapaPin===""?'<div class="dica">Na demonstração o PIN é 1234.</div>':"")+'</div>';
+}
+
+/* ---------- utilidades ---------- */
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hojeISO=()=>iso(new Date());
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function parse(s){const[a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)}
+function addDias(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function diffDias(s){return Math.round((parse(s)-parse(hojeISO()))/864e5)}
+function rotuloRel(s){const n=diffDias(s);if(n===0)return"hoje";if(n===1)return"amanhã";const d=parse(s);return(n<7?DIAS_LONGOS[d.getDay()]+" ":"")+d.getDate()+"/"+String(d.getMonth()+1).padStart(2,"0")}
+function idMissa(data,hora){return data+"_"+hora.replace(":","")}
+function ordenar(l){return l.slice().sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora))}
+function equipe(id){return estado.equipes.find(e=>e.id===id)}
+function lsGet(k){try{return localStorage.getItem(k)||""}catch(e){return""}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+let tt;function toast(t){const el=document.getElementById("toast");el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,2600)}
+
+/* ---------- dados de exemplo ---------- */
+const HORARIOS_PADRAO=[{dia:6,hora:"19:00",nome:"Missa vespertina"},{dia:0,hora:"07:00",nome:"Missa da manhã"},{dia:0,hora:"10:00",nome:"Missa das famílias"},{dia:0,hora:"18:00",nome:"Missa da noite"}];
+function exemplo(){
+  const equipes=[
+    {id:"luz-do-mundo",nome:"Ministério Luz do Mundo",responsavel:"Ana Paula",contato:"(61) 99999-0001"},
+    {id:"coral-santa-luzia",nome:"Coral Santa Luzia",responsavel:"Seu Geraldo",contato:"(61) 99999-0002"},
+    {id:"kairos",nome:"Grupo Jovem Kairós",responsavel:"Lucas",contato:"(61) 99999-0003"},
+    {id:"agape",nome:"Equipe Ágape",responsavel:"Marta",contato:"(61) 99999-0004"}
+  ];
+  const missas=gerarDoPadrao(HORARIOS_PADRAO,28);
+  const ids=equipes.map(e=>e.id);
+  missas.forEach((m,i)=>{m.equipeId=(i%7===2||i%9===5)?"":ids[i%ids.length]});
+  return{equipes,missas,horarios:HORARIOS_PADRAO};
+}
+function gerarDoPadrao(horarios,dias){
+  const out=[];const base=parse(hojeISO());
+  for(let i=0;i<dias;i++){const d=addDias(base,i);
+    horarios.filter(h=>Number(h.dia)===d.getDay()).forEach(h=>{const data=iso(d);out.push({id:idMissa(data,h.hora),data,hora:h.hora,nome:h.nome||"Santa Missa",equipeId:"",obs:""})});}
+  // Festa da padroeira
+  const ano=base.getFullYear();let festa=new Date(ano,11,13);if(festa<base)festa=new Date(ano+1,11,13);
+  if(diffDias(iso(festa))<dias){const data=iso(festa);if(!out.some(m=>m.id===idMissa(data,"19:30")))out.push({id:idMissa(data,"19:30"),data,hora:"19:30",nome:"Missa solene de Santa Luzia",equipeId:"",obs:"Festa da padroeira"})}
+  return out;
+}
+
+/* ---------- avisos (notificações do app) ---------- */
+function calcularAvisos(){
+  const av=[];const prox=ordenar(estado.missas.filter(m=>diffDias(m.data)>=0));
+  prox.forEach(m=>{const n=diffDias(m.data);
+    if(!m.equipeId&&n<=7)av.push({missa:m,tipo:"urgente",tit:"Ainda não há músicos para a missa de "+rotuloRel(m.data)+", "+m.hora,det:m.nome+" · Fale com a coordenação se sua equipe puder cantar.",ord:n});
+    else if(!m.equipeId&&n<=30)av.push({tipo:"atencao",tit:"Missa sem equipe em "+rotuloRel(m.data)+", "+m.hora,det:m.nome,ord:50+n});
+  });
+  if(estado.minhaEquipe){const eq=equipe(estado.minhaEquipe);
+    prox.filter(m=>m.equipeId===estado.minhaEquipe&&diffDias(m.data)<=7).forEach(m=>av.push({tipo:"minha",tit:"Sua equipe canta "+rotuloRel(m.data)+" às "+m.hora,det:(eq?eq.nome+" · ":"")+m.nome,ord:diffDias(m.data)-.5}));}
+  prox.filter(m=>m.equipeId&&m.equipeId!==estado.minhaEquipe&&diffDias(m.data)<=1).forEach(m=>{const eq=equipe(m.equipeId);av.push({tipo:"info",tit:(eq?eq.nome:"Equipe")+" canta "+rotuloRel(m.data)+" às "+m.hora,det:m.nome,ord:10+diffDias(m.data)})});
+  return av.sort((a,b)=>a.ord-b.ord);
+}
+
+/* ---------- render ---------- */
+const IC={
+  alerta:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 7v6"/><path d="M12 17h.01"/></svg>',
+  nota:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>'
+};
+
+function render(){
+  const av=calcularAvisos();const importantes=av.filter(a=>a.tipo==="urgente"||a.tipo==="minha").length;
+  const b=document.getElementById("bolha");b.hidden=!importantes;b.textContent=importantes;
+  const c=document.getElementById("contAvisos");c.hidden=!av.length;c.textContent=av.length;
+  document.querySelectorAll(".aba[data-aba]").forEach(x=>x.setAttribute("aria-selected",x.dataset.aba===estado.aba?"true":"false"));atualizarInstalar();
+  const alvo=document.getElementById("conteudo");
+  const faixa=estado.modo==="demo"?'<div class="faixa"><strong>Modo de demonstração.</strong> Os nomes e horários são exemplos e nada fica salvo. Preencha o arquivo <b>firebase-config.js</b> (veja o LEIA-ME) para a escala ficar salva e igual para todos.</div>':estado.offline?'<div class="faixa"><strong>Sem internet.</strong> Você está vendo a última escala salva neste aparelho.</div>':"";
+  let html="";
+  if(estado.modo==="carregando")html='<div class="vazio">Carregando a escala…</div>';
+  else if(estado.aba==="escala")html=telaEscala();
+  else if(estado.aba==="avisos")html=telaAvisos(av);
+  else if(estado.aba==="equipes")html=telaEquipes();
+  else html=telaCoord();
+  alvo.innerHTML=faixa+html;
+}
+
+function seletorMinha(){
+  return '<div class="minha"><label for="selMinha">Minha equipe</label><select id="selMinha"><option value="">Escolha para receber seus avisos</option>'+
+    estado.equipes.map(e=>'<option value="'+esc(e.id)+'"'+(e.id===estado.minhaEquipe?" selected":"")+'>'+esc(e.nome)+'</option>').join("")+'</select></div>';
+}
+
+function telaEscala(){
+  const prox=ordenar(estado.missas.filter(m=>diffDias(m.data)>=0));
+  const sem=prox.filter(m=>!m.equipeId).length;
+  let h='<div class="secao-titulo"><div><h2>Escala das missas</h2><div class="sub">'+prox.length+' missas agendadas'+(sem?' · <strong style="color:var(--vermelho)">'+sem+' sem músico</strong>':' · todas com equipe')+'</div></div>'+
+    (prox.length?'<div class="ctrl">'+aLink(linkWa(textoSemana()),"btn wa peq",IC_WA+"Enviar no grupo")+'<button class="btn sec peq" data-acao="copiar">Copiar</button></div>':"")+'</div>'+bannerInstalar()+blocoCecilia()+blocoFrase(false);
+  if(estado.mostrarCopia)h+='<textarea class="copia" id="txtCopia" readonly>'+esc(textoSemana())+'</textarea>';
+  if(estado.equipes.length)h+=seletorMinha();
+  if(!prox.length)return h+vazioEscala();
+  // agrupar por semana
+  const grupos={};prox.forEach(m=>{const d=parse(m.data);const dom=addDias(d,-d.getDay());const k=iso(dom);(grupos[k]=grupos[k]||[]).push(m)});
+  Object.keys(grupos).sort().forEach(k=>{const ini=parse(k),fim=addDias(ini,6);
+    const rot=diffDias(k)<=0&&diffDias(iso(fim))>=0?"Esta semana":"Semana de "+ini.getDate()+" "+MESES[ini.getMonth()]+" a "+fim.getDate()+" "+MESES[fim.getMonth()];
+    h+='<section class="semana"><h3>'+rot+'</h3><div class="lista">'+grupos[k].map(cartaoMissa).join("")+'</div></section>';});
+  return h;
+}
+function cartaoMissa(m){
+  const d=parse(m.data);const eq=equipe(m.equipeId);const minha=m.equipeId&&m.equipeId===estado.minhaEquipe;
+  let chip=!m.equipeId?'<span class="chip vazia"><span class="ponto"></span>Sem músico</span>':
+    '<span class="chip '+(minha?"minha-eq":"ok")+'"><span class="ponto"></span>'+esc(eq?eq.nome:"Equipe removida")+(minha?" · sua equipe":"")+'</span>';
+  let ctrl="";
+  if(coordAtiva()){ctrl='<div class="ctrl"><select data-escalar="'+esc(m.id)+'" aria-label="Equipe para esta missa"><option value="">— Sem equipe —</option>'+
+    estado.equipes.map(e=>'<option value="'+esc(e.id)+'"'+(e.id===m.equipeId?" selected":"")+'>'+esc(e.nome)+'</option>').join("")+
+    '</select><button class="btn fantasma peq" data-remover-missa="'+esc(m.id)+'">Remover</button></div>';}
+  const festa=/santa luzia/i.test(m.nome)||m.data.slice(5)==="12-13";
+  return '<article class="missa'+(minha?" destaque":"")+'"><div class="data"><div class="sem">'+DIAS[d.getDay()]+'</div><div class="dia">'+d.getDate()+'</div><div class="sem">'+MESES[d.getMonth()]+'</div></div>'+
+    '<div class="info">'+(festa?'<span class="festa-tag">Festa da padroeira</span>':"")+'<div class="linha1"><span class="hora">'+esc(m.hora)+'</span><span class="nome">'+esc(m.nome)+'</span></div>'+chip+
+    (m.obs&&!festa?'<div class="obs">'+esc(m.obs)+'</div>':"")+acoesMissa(m)+ctrl+'</div></article>';
+}
+function acoesMissa(m){
+  const eq=equipe(m.equipeId);const minha=m.equipeId&&m.equipeId===estado.minhaEquipe;let h="";
+  if(minha)h+=aLink(linkAgenda(m),"mini-link",IC_CAL+"Lembrete no celular","Adicionar lembrete desta missa à agenda");
+  if(!m.equipeId&&diffDias(m.data)<=14)h+=aLink(linkWa(msgPedido(m)),"mini-link wa",IC_WA+"Pedir músico");
+  if(coordAtiva()&&eq&&foneWa(contatoDe(eq)))h+=aLink(linkWa(msgEquipe(m,eq),foneWa(contatoDe(eq))),"mini-link wa",IC_WA+"Avisar "+esc(eq.responsavel||"equipe"));
+  return h?'<div class="mini-acoes">'+h+'</div>':"";
+}
+function vazioEscala(){
+  if(estado.podeEditar)return'<div class="vazio"><strong>Nenhuma missa na escala ainda.</strong>Cadastre as equipes e gere as missas do mês na aba Coordenação.<div class="ctrl" style="justify-content:center"><button class="btn" data-ir="coord">Montar a escala</button>'+(coordAtiva()?'<button class="btn sec" data-acao="exemplo">Preencher com exemplo</button>':'')+'</div></div>';
+  return'<div class="vazio"><strong>A escala ainda não foi publicada.</strong>Assim que a coordenação montar as missas, elas aparecem aqui.</div>';
+}
+
+function telaAvisos(av){
+  let h='<div class="secao-titulo"><div><h2>Avisos</h2><div class="sub">Missas sem músico e as próximas vezes que cada equipe canta</div></div></div>';
+  if(estado.equipes.length)h+=seletorMinha();
+  h+=blocoLembretes();
+  if(!av.length)return h+'<div class="vazio"><strong>Tudo em ordem.</strong>Nenhuma missa sem músico nos próximos 30 dias.</div>';
+  return h+'<div class="avisos">'+av.map(a=>'<div class="aviso '+(a.tipo==="atencao"?"urgente":a.tipo)+'"><div class="ic">'+(a.tipo==="minha"?IC.nota:a.tipo==="info"?IC.ok:IC.alerta)+'</div><div><div class="tit">'+esc(a.tit)+'</div><div class="det">'+esc(a.det)+'</div>'+(a.missa?'<div class="mini-acoes">'+aLink(linkWa(msgPedido(a.missa)),"mini-link wa",IC_WA+"Pedir músico no WhatsApp")+'</div>':"")+'</div></div>').join("")+'</div>';
+}
+
+function blocoLembretes(){
+  const titulo='<div class="lemb-cab"><div class="ic-ap">'+IC_CAL+'</div><div><h3>Lembretes no celular</h3><div class="sub">Coloque as missas da sua equipe na agenda do celular. A agenda avisa você antes de cada missa, mesmo com o app fechado.</div></div></div>';
+  if(!estado.minhaEquipe)return'<div class="lembretes">'+titulo+'<div class="faixa">Escolha <strong>Minha equipe</strong> acima para ver os lembretes.</div></div>';
+  const ms=ordenar(estado.missas.filter(m=>m.equipeId===estado.minhaEquipe&&diffDias(m.data)>=0)).slice(0,6);
+  if(!ms.length)return'<div class="lembretes">'+titulo+'<div class="sub">Sua equipe ainda não tem missa na escala.</div></div>';
+  return'<div class="lembretes">'+titulo+'<div class="lemb-lista">'+ms.map(m=>'<div class="lemb-item"><div class="txt"><b>'+esc(dataBR(m.data))+' · '+esc(m.hora)+'</b><span>'+esc(m.nome)+'</span></div>'+aLink(linkAgenda(m),"btn sec peq",IC_CAL+"Adicionar","Adicionar "+m.nome+" à agenda")+'</div>').join("")+'</div>'+
+    '<div class="dica">Abre o Google Agenda com a missa preenchida. No iPhone, entre com sua conta Google ou use o Google Agenda instalado.</div></div>';
+}
+function telaEquipes(){
+  let h='<div class="secao-titulo"><div><h2>Equipes de música</h2><div class="sub">'+estado.equipes.length+' equipes servindo na paróquia</div></div>'+(coordAtiva()?'<button class="btn peq" data-ir="coord">Nova equipe</button>':"")+'</div>';
+  if(!estado.equipes.length)return h+'<div class="vazio"><strong>Nenhuma equipe cadastrada.</strong>'+(coordAtiva()?'Adicione a primeira na aba Coordenação.':'A coordenação vai cadastrar as equipes em breve.')+'</div>';
+  h+='<div class="equipes">'+estado.equipes.slice().sort((a,b)=>a.nome.localeCompare(b.nome)).map(e=>{
+    const prox=ordenar(estado.missas.filter(m=>m.equipeId===e.id&&diffDias(m.data)>=0));
+    return'<div class="equipe"><h3>'+esc(e.nome)+'</h3>'+(e.responsavel?'<div class="meta">Responsável: '+esc(e.responsavel)+'</div>':"")+(coordAtiva()&&contatoDe(e)?'<div class="meta">'+(foneWa(contatoDe(e))?aLink("https://wa.me/"+foneWa(contatoDe(e)),"mini-link wa",IC_WA+esc(contatoDe(e))):esc(contatoDe(e)))+'</div>':"")+
+      '<div class="prox">'+(prox.length?'Próxima: <strong>'+rotuloRel(prox[0].data)+', '+esc(prox[0].hora)+'</strong> · '+prox.length+' na escala':'Ainda sem missa na escala')+'</div>'+
+      (coordAtiva()?'<div class="acoes"><button class="btn fantasma peq" data-remover-equipe="'+esc(e.id)+'">Remover equipe</button></div>':"")+'</div>';}).join("")+'</div>';
+  return h;
+}
+
+function telaCoord(){
+  if(!coordAtiva())return telaPin();
+  const prox=estado.missas.filter(m=>diffDias(m.data)>=0);const sem=prox.filter(m=>!m.equipeId).length;
+  const opDias=DIAS_LONGOS.map((d,i)=>'<option value="'+i+'">'+d+'</option>').join("");
+  return'<div class="secao-titulo"><div><h2>Coordenação</h2><div class="sub">Monte a escala, cadastre equipes e acompanhe as pendências</div></div><div class="ctrl"><button class="btn sec peq" data-acao="bloquear">Bloquear</button>'+(estado.modo==="online"?'<button class="btn fantasma peq" data-acao="sair">Sair da conta</button>':"")+'</div></div>'+
+  blocoFrase(true)+
+  '<div class="resumo"><div class="num"><b>'+prox.length+'</b><span>missas agendadas</span></div><div class="num"><b style="color:'+(sem?"var(--alerta)":"var(--ok)")+'">'+sem+'</b><span>sem músico</span></div><div class="num"><b>'+estado.equipes.length+'</b><span>equipes</span></div></div>'+
+  '<div class="painel"><h3>Nova equipe</h3><form class="form" id="fEquipe"><label class="campo"><span>Nome da equipe</span><input type="text" id="eqNome" required maxlength="60" placeholder="Ex.: Ministério Luz do Mundo"></label><label class="campo"><span>Responsável</span><input type="text" id="eqResp" maxlength="60"></label><label class="campo"><span>WhatsApp</span><input type="text" id="eqCont" inputmode="tel" maxlength="20" placeholder="(61) 99999-0000"></label><button class="btn" type="submit">Adicionar equipe</button></form></div>'+
+  '<div class="painel"><h3>Horários fixos das missas</h3><div class="sub">Estes são os horários que aparecem para escolher no calendário. Também dá para gerar as missas das próximas semanas de uma vez.</div>'+
+  '<div class="horarios">'+(estado.horarios.length?estado.horarios.map((h,i)=>'<span class="horario">'+DIAS[h.dia]+' '+esc(h.hora)+' · '+esc(h.nome)+'<button data-remover-horario="'+i+'" aria-label="Remover horário">×</button></span>').join(""):'<span class="sub">Nenhum horário fixo ainda.</span>')+'</div>'+
+  '<form class="form" id="fHorario"><label class="campo"><span>Dia</span><select id="hDia">'+opDias+'</select></label><label class="campo"><span>Hora</span><input type="time" id="hHora" required value="19:00"></label><label class="campo"><span>Celebração</span><input type="text" id="hNome" maxlength="60" placeholder="Santa Missa"></label><button class="btn sec" type="submit">Adicionar horário</button></form>'+
+  '<div class="ctrl"><label class="campo" style="flex:0 0 auto"><span>Gerar para</span><select id="gSemanas"><option value="14">2 semanas</option><option value="28" selected>4 semanas</option><option value="42">6 semanas</option></select></label><button class="btn" data-acao="gerar" style="align-self:end"'+(estado.horarios.length?"":" disabled")+'>Gerar missas</button></div></div>'+
+  telaMontar()+painelSeguranca()+
+  '';
+}
+
+
+/* ---------- montar a escala (calendário) ---------- */
+const MESES_LONGOS=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+const SUGESTOES=["Santa Missa","Missa dominical","Missa das famílias","Missa de 7º dia","Casamento","Batizado","Adoração","Missa de Santa Luzia"];
+function telaMontar(){
+  if(!estado.calDia)escolherDia(hojeISO());
+  if(!estado.calMes)estado.calMes=estado.calDia.slice(0,7);
+  const[a,m]=estado.calMes.split("-").map(Number);
+  const primeiro=new Date(a,m-1,1);const nDias=new Date(a,m,0).getDate();
+  const porDia={};estado.missas.forEach(x=>{(porDia[x.data]=porDia[x.data]||[]).push(x)});
+  let cel=["D","S","T","Q","Q","S","S"].map((d,i)=>'<div class="cal-sem'+(i===0?" dom":"")+'">'+d+'</div>').join("");
+  for(let i=0;i<primeiro.getDay();i++)cel+='<span class="dia-cal fora"></span>';
+  for(let d=1;d<=nDias;d++){
+    const data=iso(new Date(a,m-1,d));const ms=porDia[data]||[];const wd=new Date(a,m-1,d).getDay();
+    const cls=["dia-cal"];if(wd===0)cls.push("domingo");if(data===hojeISO())cls.push("hoje");if(data===estado.calDia)cls.push("sel");if(diffDias(data)<0)cls.push("passado");
+    const marcas=ms.slice(0,3).map(x=>'<i class="'+(x.equipeId?"":"vazia")+'"></i>').join("");
+    const festa=data.slice(5)==="12-13"?'<span class="festa-ic" title="Festa de Santa Luzia">✦</span>':data.slice(5)==="11-22"?'<span class="festa-ic" title="Santa Cecília">♪</span>':"";
+    cel+='<button class="'+cls.join(" ")+'" data-cal-dia="'+data+'" aria-label="'+d+' de '+MESES_LONGOS[m-1]+(ms.length?", "+ms.length+" missa(s)":"")+'" aria-pressed="'+(data===estado.calDia)+'">'+festa+'<span>'+d+'</span><span class="marcas">'+marcas+'</span></button>';
+  }
+  const dSel=parse(estado.calDia);
+  const missasDia=ordenar(porDia[estado.calDia]||[]);
+  // horários disponíveis: fixos do dia da semana + os já marcados nesse dia
+  const disp=[];
+  estado.horarios.filter(h=>Number(h.dia)===dSel.getDay()).forEach(h=>disp.push({hora:h.hora,nome:h.nome}));
+  missasDia.forEach(x=>{if(!disp.some(h=>h.hora===x.hora))disp.push({hora:x.hora,nome:x.nome})});
+  disp.sort((x,y)=>x.hora.localeCompare(y.hora));
+  const opHoras=disp.map(h=>{const ex=missasDia.find(x=>x.hora===h.hora);const eq=ex&&equipe(ex.equipeId);
+    return'<button class="opcao'+(ex?" ocupada":"")+'" data-sel-hora="'+esc(h.hora)+'" aria-pressed="'+(!estado.horaLivre&&estado.selHora===h.hora)+'"><b>'+esc(h.hora)+'</b><small>'+(ex?(eq?"✓ "+esc(eq.nome):"Na escala, sem equipe"):esc(h.nome||"Santa Missa"))+'</small></button>'}).join("")+
+    '<button class="opcao" data-acao="hora-livre" aria-pressed="'+estado.horaLivre+'"><b>Outro</b><small>escolher horário</small></button>';
+  const opEquipes=estado.equipes.slice().sort((x,y)=>x.nome.localeCompare(y.nome)).map(e=>{const n=estado.missas.filter(x=>x.equipeId===e.id&&diffDias(x.data)>=0).length;
+    return'<button class="opcao equipe-op" data-sel-equipe="'+esc(e.id)+'" aria-pressed="'+(estado.selEquipe===e.id)+'"><b>'+esc(e.nome)+'</b><small>'+n+' missa'+(n===1?"":"s")+' na escala</small></button>'}).join("")+
+    '<button class="opcao equipe-op" data-sel-equipe="" aria-pressed="'+(estado.selEquipe==="")+'"><b>Ainda sem equipe</b><small>fica marcada como "sem músico"</small></button>';
+  const existente=missasDia.find(x=>x.hora===estado.selHora);
+  const podeSalvar=!!estado.selHora;
+  return'<section class="montar"><div class="montar-topo"><div style="flex:1"><h3>Escala</h3><div class="sub">Escolha o dia, o horário, a equipe e a celebração</div></div></div>'+
+  '<div class="cal"><div class="cal-cab"><button class="seta" data-cal-mes="-1" aria-label="Mês anterior">‹</button><div><span class="mes">'+MESES_LONGOS[m-1]+'</span><span class="ano">'+a+'</span></div><button class="seta" data-cal-mes="1" aria-label="Próximo mês">›</button></div>'+
+  '<div class="cal-grade">'+cel+'</div>'+
+  '<div class="legenda"><span><i style="background:var(--ok)"></i>com equipe</span><span><i style="background:var(--vermelho)"></i>sem músico</span><span><i style="background:transparent;border:1.5px solid var(--vermelho)"></i>hoje</span><span style="color:var(--ouro)">✦ Santa Luzia</span></div></div>'+
+  '<div class="passos">'+
+   '<div><div class="passo-tit"><b>1</b>Dia escolhido</div><div class="dia-escolhido">'+DIAS_LONGOS[dSel.getDay()]+', '+dSel.getDate()+' de '+MESES_LONGOS[dSel.getMonth()]+'</div></div>'+
+   '<div><div class="passo-tit"><b>2</b>Horário da missa</div><div class="opcoes">'+opHoras+'</div>'+
+     (estado.horaLivre?'<label class="campo" style="margin-top:10px;max-width:180px"><span>Horário</span><input type="time" id="horaLivre" value="'+esc(estado.selHora)+'"></label>':"")+
+     (!disp.length&&!estado.horaLivre?'<div class="sub" style="margin-top:6px">Não há horário fixo para '+DIAS_LONGOS[dSel.getDay()]+'. Use "Outro" ou cadastre em Horários fixos.</div>':"")+'</div>'+
+   '<div><div class="passo-tit"><b>3</b>Equipe de música</div>'+(estado.equipes.length?'<div class="opcoes">'+opEquipes+'</div>':'<div class="sub">Cadastre as equipes em "Nova equipe", logo abaixo.</div>')+'</div>'+
+   '<div><div class="passo-tit"><b>4</b>Celebração</div><input type="text" class="celebracao" id="celebracao" maxlength="80" placeholder="Ex.: Missa dominical, Casamento de Ana e João" value="'+esc(estado.celebracao)+'">'+
+     '<div class="sugestoes">'+SUGESTOES.map(t=>'<button data-sug="'+esc(t)+'">'+esc(t)+'</button>').join("")+'</div></div>'+
+   '<div class="salvar-linha"><button class="btn" data-acao="salvar-escala"'+(podeSalvar?"":" disabled")+'>'+(existente?"Atualizar esta missa":"Adicionar à escala")+'</button><span class="sub">'+(podeSalvar?(existente?"Já existe missa às "+esc(estado.selHora)+" neste dia; ela será atualizada.":""):"Escolha um horário para continuar.")+'</span></div>'+
+   (missasDia.length?'<div><div class="passo-tit">Missas neste dia</div><div class="no-dia">'+missasDia.map(x=>{const eq=equipe(x.equipeId);return'<div class="item"><div class="txt"><b>'+esc(x.hora)+'</b> · '+esc(x.nome)+'<br>'+(eq?'<span class="chip ok"><span class="ponto"></span>'+esc(eq.nome)+'</span>':'<span class="chip vazia"><span class="ponto"></span>Sem músico</span>')+acoesMissa(x)+'</div><div class="ctrl"><button class="btn fantasma peq" data-editar-missa="'+esc(x.id)+'">Editar</button><button class="btn fantasma peq" data-remover-missa="'+esc(x.id)+'">Remover</button></div></div>'}).join("")+'</div></div>':"")+
+  '</div></section>';
+}
+function escolherDia(data){
+  estado.calDia=data;estado.selHora="";estado.horaLivre=false;estado.selEquipe="";estado.celebracao="";
+  const d=parse(data);const fixos=estado.horarios.filter(h=>Number(h.dia)===d.getDay());
+  const livres=fixos.filter(h=>!estado.missas.some(x=>x.data===data&&x.hora===h.hora));
+  const alvo=livres[0]||fixos[0];if(alvo){estado.selHora=alvo.hora;preencherDeHora()}
+  if(data.slice(5)==="12-13"&&!estado.celebracao)estado.celebracao="Missa solene de Santa Luzia";
+}
+function preencherDeHora(){
+  const ex=estado.missas.find(x=>x.data===estado.calDia&&x.hora===estado.selHora);
+  if(ex){estado.selEquipe=ex.equipeId||"";estado.celebracao=ex.nome||"";return}
+  const fixo=estado.horarios.find(h=>Number(h.dia)===parse(estado.calDia).getDay()&&h.hora===estado.selHora);
+  estado.celebracao=fixo?fixo.nome:estado.celebracao;
+}
+async function salvarEscala(){
+  if(!estado.selHora)return;
+  const data=estado.calDia,hora=estado.selHora;
+  const m={id:idMissa(data,hora),data,hora,nome:estado.celebracao.trim()||"Santa Missa",equipeId:estado.selEquipe,obs:""};
+  const ex=estado.missas.find(x=>x.id===m.id);if(ex&&ex.obs)m.obs=ex.obs;
+  const eq=equipe(m.equipeId);const msg=(ex?"Missa atualizada":"Missa adicionada")+(eq?" · "+eq.nome:" · sem equipe");
+  if(!db)return mudarLocal(()=>{estado.missas=estado.missas.filter(x=>x.id!==m.id).concat(m)},msg);
+  const{id,...dados}=m;await salvar(()=>db.collection("missas").doc(id).set(dados),msg);
+}
+
+function textoSemana(){
+  const ms=ordenar(estado.missas.filter(m=>{const n=diffDias(m.data);return n>=0&&n<7}));
+  let t="🎶 *Escala da Pastoral da Música*\nParóquia Santa Luzia\n\n";
+  ms.forEach(m=>{const d=parse(m.data);const eq=equipe(m.equipeId);t+="▪️ "+DIAS[d.getDay()]+" "+d.getDate()+"/"+String(d.getMonth()+1).padStart(2,"0")+" · "+m.hora+" · "+m.nome+"\n    "+(eq?eq.nome:"⚠️ SEM MÚSICO — quem puder, avise a coordenação")+"\n"});
+  if(!ms.length)t+="Nenhuma missa nesta semana.\n";
+  return t+"\nSanta Luzia, rogai por nós! 🕯️";
+}
+
+/* ---------- gravação ---------- */
+async function salvar(fn,okMsg){
+  try{await fn();if(okMsg)toast(okMsg)}catch(e){
+    if(e&&(e.code==="invalid_argument"||e.code==="permission-denied")){estado.podeEditar=false;toast("Você não tem permissão para alterar a escala.");render()}
+    else toast("Não foi possível salvar agora. Tente de novo em instantes.");}
+}
+function mudarLocal(fn,msg){fn();render();if(msg)toast(msg+" (exemplo, não fica salvo)")}
+
+async function escalar(id,equipeId){
+  const m=estado.missas.find(x=>x.id===id);if(!m)return;
+  const eq=equipe(equipeId);const msg=equipeId?(eq?eq.nome:"Equipe")+" escalada":"Missa ficou sem equipe";
+  if(!db)return mudarLocal(()=>m.equipeId=equipeId,msg);
+  await salvar(()=>db.collection("missas").doc(id).update({equipeId}),msg);
+}
+async function addMissa(m){
+  if(!db)return mudarLocal(()=>{estado.missas=estado.missas.filter(x=>x.id!==m.id).concat(m)},"Missa adicionada");
+  const{id,...dados}=m;await salvar(()=>db.collection("missas").doc(id).set(dados),"Missa adicionada");
+}
+async function removerMissa(id){
+  if(!db)return mudarLocal(()=>{estado.missas=estado.missas.filter(x=>x.id!==id)},"Missa removida");
+  await salvar(()=>db.collection("missas").doc(id).delete(),"Missa removida");
+}
+async function addEquipe(e){
+  if(!db)return mudarLocal(()=>estado.equipes.push(e),"Equipe adicionada");
+  const{id,contato,...dados}=e;await salvar(async()=>{await db.collection("equipes").doc(id).set(dados);if(contato)await db.collection("contatos").doc(id).set({contato})},"Equipe adicionada");
+}
+async function removerEquipe(id){
+  const usadas=estado.missas.filter(m=>m.equipeId===id&&diffDias(m.data)>=0);
+  if(!db)return mudarLocal(()=>{estado.equipes=estado.equipes.filter(e=>e.id!==id);usadas.forEach(m=>m.equipeId="")},"Equipe removida");
+  await salvar(async()=>{await db.collection("equipes").doc(id).delete();await db.collection("contatos").doc(id).delete();for(const m of usadas)await db.collection("missas").doc(m.id).update({equipeId:""})},"Equipe removida");
+}
+async function salvarHorarios(lista){
+  if(!db)return mudarLocal(()=>estado.horarios=lista);
+  await salvar(()=>db.doc("config/horarios").set({itens:lista}));
+}
+async function gerar(dias){
+  const novas=gerarDoPadrao(estado.horarios,dias).filter(n=>!estado.missas.some(m=>m.id===n.id));
+  if(!novas.length)return toast("Essas missas já estão na escala");
+  if(!db)return mudarLocal(()=>estado.missas=estado.missas.concat(novas),novas.length+" missas criadas");
+  await salvar(async()=>{for(const m of novas){const{id,...d}=m;await db.collection("missas").doc(id).set(d)}},novas.length+" missas criadas");
+}
+async function preencherExemplo(){
+  const ex=exemplo();
+  if(!db){Object.assign(estado,ex);render();return}
+  await salvar(async()=>{
+    for(const e of ex.equipes){const{id,contato,...d}=e;await db.collection("equipes").doc(id).set(d);if(contato)await db.collection("contatos").doc(id).set({contato})}
+    for(const m of ex.missas){const{id,...d}=m;await db.collection("missas").doc(id).set(d)}
+    await db.doc("config/horarios").set({itens:ex.horarios});
+  },"Exemplo carregado. Troque pelos nomes reais quando quiser.");
+}
+function slug(s){return(s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"equipe").slice(0,60)+"-"+Math.random().toString(36).slice(2,6)}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.aba){estado.aba=t.dataset.aba;render();try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){}return}
+  if(t.id==="btnSino"){estado.aba="avisos";render();return}
+  if(t.dataset.ir){estado.aba=t.dataset.ir;render();return}
+  if(t.dataset.pin)return teclaPin(t.dataset.pin);
+  if(t.dataset.calDia){escolherDia(t.dataset.calDia);render();return}
+  if(t.dataset.calMes){const[a,m]=estado.calMes.split("-").map(Number);const d=new Date(a,m-1+Number(t.dataset.calMes),1);estado.calMes=iso(d).slice(0,7);render();return}
+  if(t.dataset.selHora!==undefined){estado.selHora=t.dataset.selHora;estado.horaLivre=false;preencherDeHora();render();return}
+  if(t.dataset.selEquipe!==undefined){estado.selEquipe=t.dataset.selEquipe;render();return}
+  if(t.dataset.sug){estado.celebracao=t.dataset.sug;render();return}
+  if(t.dataset.editarMissa){const x=estado.missas.find(y=>y.id===t.dataset.editarMissa);if(x){estado.selHora=x.hora;estado.horaLivre=false;preencherDeHora();render()}return}
+  if(t.dataset.removerMissa)return removerMissa(t.dataset.removerMissa);
+  if(t.dataset.removerEquipe)return removerEquipe(t.dataset.removerEquipe);
+  if(t.dataset.removerHorario!==undefined){const l=estado.horarios.slice();l.splice(Number(t.dataset.removerHorario),1);return salvarHorarios(l)}
+  const a=t.dataset.acao;
+  if(a==="gerar")return gerar(Number(document.getElementById("gSemanas").value));
+  if(a==="exemplo")return preencherExemplo();
+  if(a==="outra-frase"){estado.fraseIdx=(fraseDoDia(),(estado.fraseIdx+1)%FRASES.length);render();return}
+  if(a==="bloquear")return bloquear();
+  if(a==="instalar")return instalar();
+  if(a==="fechar-folha")return fecharFolha();
+  if(a==="copiar-link"){const u=location.href.split("#")[0];try{navigator.clipboard.writeText(u).then(()=>toast("Link copiado. Cole no Safari."),()=>toast(u))}catch(e){toast(u)}return}
+  if(a==="sair")return sairConta();
+  if(a==="esqueci")return esqueciSenha();
+  if(a==="fechar-banner"){lsSet("pastoral-banner-instalar","ok");render();return}
+  if(a==="salvar-escala")return salvarEscala();
+  if(a==="hora-livre"){estado.horaLivre=true;estado.selHora="";render();const el=document.getElementById("horaLivre");if(el)el.focus();return}
+  if(a==="trocar-pin"){estado.desbloqueado=false;estado.etapaPin="criar";estado.digitado="";estado.msgPin="Escolha o novo PIN de 4 números.";estado.erroPin=false;render();return}
+  if(a==="copiar"){const txt=textoSemana();
+    try{navigator.clipboard.writeText(txt).then(()=>toast("Escala copiada. Cole no grupo do WhatsApp."),()=>{estado.mostrarCopia=true;render();selecionarCopia()})}
+    catch(err){estado.mostrarCopia=true;render();selecionarCopia()}}
+});
+function selecionarCopia(){const el=document.getElementById("txtCopia");if(el){el.focus();el.select();toast("Texto selecionado. Copie e cole no WhatsApp.")}}
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.id==="celebracao")estado.celebracao=t.value;
+  if(t.id==="horaLivre"){estado.selHora=t.value;const b=document.querySelector('[data-acao="salvar-escala"]');if(b)b.disabled=!t.value}
+});
+document.addEventListener("change",e=>{
+  if(e.target.id==="horaLivre"){render();const el=document.getElementById("horaLivre");if(el)el.focus();return}
+  const t=e.target;
+  if(t.id==="selMinha"){estado.minhaEquipe=t.value;lsSet("pastoral-minha-equipe",t.value);render();if(t.value)toast("Pronto, os avisos da sua equipe aparecem no sino");return}
+  if(t.dataset.escalar)escalar(t.dataset.escalar,t.value);
+});
+document.addEventListener("submit",e=>{
+  e.preventDefault();const f=e.target;
+  if(f.id==="fLogin"){entrar(document.getElementById("lgEmail").value.trim(),document.getElementById("lgSenha").value);return}
+  if(f.id==="fEquipe"){const nome=document.getElementById("eqNome").value.trim();if(!nome)return;
+    addEquipe({id:slug(nome),nome,responsavel:document.getElementById("eqResp").value.trim(),contato:document.getElementById("eqCont").value.trim()});}
+  if(f.id==="fHorario"){const hora=document.getElementById("hHora").value;if(!hora)return;
+    const l=estado.horarios.concat({dia:Number(document.getElementById("hDia").value),hora,nome:document.getElementById("hNome").value.trim()||"Santa Missa"});
+    l.sort((a,b)=>((a.dia+1)%7*10000+parseInt(a.hora.replace(":","")))-((b.dia+1)%7*10000+parseInt(b.hora.replace(":",""))));salvarHorarios(l);}
+
+});
+
+/* ---------- festa da padroeira ---------- */
+(function(){const b=parse(hojeISO());let f=new Date(b.getFullYear(),11,13);if(f<b)f=new Date(b.getFullYear()+1,11,13);
+  const n=Math.round((f-b)/864e5);document.getElementById("festa").textContent=n===0?"Hoje é festa de Santa Luzia!":"Faltam "+n+" dias para a festa de Santa Luzia";})();
+
+
+/* ---------- instalar ---------- */
+function aparelho(){const u=navigator.userAgent||"";
+  if(/iPhone|iPad|iPod/i.test(u)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1))return"ios";
+  if(/Android/i.test(u))return"android";return"pc"}
+function instalado(){try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch(e){return false}}
+function bannerInstalar(){
+  if(instalado()||lsGet("pastoral-banner-instalar")==="ok")return"";
+  return'<div class="instalar-banner"><img src="icon-192.png" alt="" width="40" height="40" class="banner-ic"><div class="txt"><strong>Instale o app da Pastoral</strong> e abra a escala direto da tela inicial.</div><button class="btn peq" data-acao="instalar">Instalar</button><button class="x" data-acao="fechar-banner" aria-label="Fechar">×</button></div>';
+}
+function painelSeguranca(){
+  const v2=estado.pinVer===2;
+  const it=(ok,t,d)=>'<li class="'+(ok?"ok":"pend")+'"><span class="marca-seg">'+(ok?IC.ok:IC.alerta)+'</span><div><b>'+t+'</b><span>'+d+'</span></div></li>';
+  return'<div class="painel"><h3>Segurança</h3><ul class="seg">'+
+    it(estado.modo==="online","Só a coordenação altera a escala","Só os e-mails liberados nas regras do Firebase conseguem gravar, mesmo por fora do app. Os músicos apenas veem.")+
+    it(estado.modo==="online","Login com e-mail e senha","A coordenação entra com a própria conta e confirma com o PIN neste aparelho.")+
+    it(true,"Contatos protegidos","Os WhatsApps das equipes só aparecem para a coordenação.")+
+    it(true,"PIN escondido de todos","O PIN fica guardado embaralhado e só a coordenação consegue ler o registro dele.")+
+    it(v2,"Proteção forte do PIN",v2?"PIN protegido com criptografia reforçada.":"Será reforçada automaticamente na próxima vez que você entrar com o PIN.")+
+    it(true,"Bloqueio por tentativas","5 erros seguidos pausam o teclado, e a pausa dobra a cada novo erro, até 15 minutos.")+
+    it(true,"Bloqueio automático","A Coordenação tranca sozinha após "+INATIVIDADE_MIN+" minutos sem uso ou ao fechar o app.")+
+    '</ul><div class="ctrl"><button class="btn fantasma peq" data-acao="trocar-pin">Trocar PIN</button><button class="btn sec peq" data-acao="bloquear">Bloquear agora</button></div></div>';
+}
+
+
+/* ---------- login (Firebase) ---------- */
+let auth=null;
+function telaLogin(ic){
+  if(estado.usuario)return'<div class="cadeado">'+ic+'<h2>Acesso não liberado</h2><p class="sub" style="margin:0">O e-mail <b>'+esc(estado.usuario.email||"")+'</b> não está cadastrado como coordenação desta pastoral.</p><button class="btn sec" data-acao="sair">Sair e usar outro e-mail</button></div>';
+  return'<div class="cadeado">'+ic+'<h2>Entrar na coordenação</h2><p class="sub" style="margin:0">Use o e-mail e a senha da coordenação. Depois você confirma com o PIN.</p>'+
+    '<form class="form-login" id="fLogin"><label class="campo"><span>E-mail</span><input type="email" id="lgEmail" autocomplete="username" required maxlength="120"></label><label class="campo"><span>Senha</span><input type="password" id="lgSenha" autocomplete="current-password" required maxlength="128"></label>'+
+    '<div class="msg-pin'+(estado.msgLogin?" erro":"")+'" role="status">'+esc(estado.msgLogin)+'</div><button class="btn" type="submit"'+(estado.entrando?" disabled":"")+'>'+(estado.entrando?"Entrando…":"Entrar")+'</button></form>'+
+    '<button class="btn fantasma peq" data-acao="esqueci">Esqueci minha senha</button></div>';
+}
+function erroLogin(c){
+  if(/invalid-credential|wrong-password|user-not-found|invalid-email|invalid-login/.test(c))return"E-mail ou senha incorretos.";
+  if(/too-many-requests/.test(c))return"Muitas tentativas. Aguarde alguns minutos e tente de novo.";
+  if(/network/.test(c))return"Sem conexão com a internet.";
+  if(/user-disabled/.test(c))return"Esta conta foi desativada.";
+  return"Não foi possível entrar agora. Tente de novo.";
+}
+async function entrar(email,senha){
+  if(!auth)return;estado.entrando=true;estado.msgLogin="";render();
+  try{await auth.signInWithEmailAndPassword(email,senha);estado.msgLogin=""}
+  catch(e){estado.msgLogin=erroLogin(String(e&&e.code||""))}
+  estado.entrando=false;render();
+}
+async function esqueciSenha(){
+  const el=document.getElementById("lgEmail");const email=el?el.value.trim():"";
+  if(!email){estado.msgLogin="Digite seu e-mail acima e toque de novo em “Esqueci minha senha”.";return render()}
+  try{await auth.sendPasswordResetEmail(email);toast("Se o e-mail estiver cadastrado, chega um link para criar nova senha.")}
+  catch(e){estado.msgLogin=erroLogin(String(e&&e.code||""));render()}
+}
+async function sairConta(){estado.desbloqueado=false;ssSet("pastoral-coord","");try{if(auth)await auth.signOut()}catch(e){}toast("Você saiu da conta da coordenação")}
+
+/* ---------- instalação (PWA) ---------- */
+let promptInstalar=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();promptInstalar=e;atualizarInstalar()});
+window.addEventListener("appinstalled",()=>{promptInstalar=null;fecharFolha();toast("App instalado! Procure o ícone na tela inicial.");atualizarInstalar();render()});
+function atualizarInstalar(){const b=document.getElementById("abaInstalar");if(b)b.hidden=instalado()}
+async function instalar(){
+  if(instalado())return toast("O app já está instalado neste aparelho");
+  if(promptInstalar){
+    const p=promptInstalar;promptInstalar=null;
+    try{await p.prompt();const r=await p.userChoice;if(r&&r.outcome==="accepted"){lsSet("pastoral-banner-instalar","ok");toast("Instalando…")}}catch(e){}
+    atualizarInstalar();return;
+  }
+  const ap=aparelho();
+  if(ap==="ios"){
+    const safari=/Safari/i.test(navigator.userAgent)&&!/CriOS|FxiOS|EdgiOS|Instagram|FBAN|FBAV/i.test(navigator.userAgent);
+    return abrirFolha('<h3>Instalar no iPhone</h3>'+(safari?
+      '<ol class="passos-ios"><li><span class="n">1</span>Toque em <b>Compartilhar</b> <span class="ic-share">'+IC_SHARE+'</span> na barra do Safari.</li><li><span class="n">2</span>Escolha <b>Adicionar à Tela de Início</b> e toque em <b>Adicionar</b>.</li></ol><div class="seta-baixo" aria-hidden="true">↓</div>':
+      '<p>No iPhone a instalação é feita pelo <b>Safari</b>. Copie o link e abra no Safari para instalar.</p><button class="btn" data-acao="copiar-link">Copiar link do app</button>'));
+  }
+  abrirFolha('<h3>Instalar o app</h3><p>Seu navegador ainda não liberou o botão automático. Abra o menu do navegador <span class="kbd">⋮</span> e escolha <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>.</p><p class="sub">Dica: no Android e no computador, use o Chrome ou o Edge.</p>');
+}
+const IC_SHARE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+function abrirFolha(html){const f=document.getElementById("folha");f.querySelector(".folha-corpo").innerHTML=html;f.hidden=false;const b=f.querySelector(".folha-fechar");if(b)b.focus()}
+function fecharFolha(){const f=document.getElementById("folha");if(f)f.hidden=true}
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+
+/* ---------- tema ---------- */
+const TEMAS=[{v:"auto",n:"Automático",i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>'},
+  {v:"light",n:"Claro",i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'},
+  {v:"dark",n:"Escuro",i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'}];
+let temaAtual=lsGet("pastoral-tema")||"auto";
+function aplicarTema(){
+  const r=document.documentElement;
+  if(temaAtual==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",temaAtual);
+  const t=TEMAS.find(x=>x.v===temaAtual)||TEMAS[0];
+  const b=document.getElementById("btnTema");b.innerHTML=t.i+'<span>'+t.n+'</span>';b.setAttribute("aria-label","Tema: "+t.n+". Toque para mudar");
+}
+document.getElementById("btnTema").addEventListener("click",()=>{
+  const i=TEMAS.findIndex(x=>x.v===temaAtual);temaAtual=TEMAS[(i+1)%TEMAS.length].v;lsSet("pastoral-tema",temaAtual);aplicarTema();toast("Tema "+TEMAS.find(x=>x.v===temaAtual).n.toLowerCase());
+});
+if(temaAtual!=="auto")aplicarTema();else{const b=document.getElementById("btnTema");const t=TEMAS[0];b.innerHTML=t.i+'<span>'+t.n+'</span>'}
+
+/* ---------- início ---------- */
+estado.minhaEquipe=lsGet("pastoral-minha-equipe");
+{const t=Number(ssGet("pastoral-coord")||0);estado.desbloqueado=t>0&&Date.now()-t<INATIVIDADE_MIN*60000;if(estado.desbloqueado)ultimaAtividade=t;}
+const h=location.hash.replace("#","");if(["escala","avisos","equipes","coord"].includes(h))estado.aba=h;
+if(h==="instalar")setTimeout(()=>instalar(),400);
+render();
+
+function modoDemo(){if(estado.modo!=="carregando")return;Object.assign(estado,exemplo(),{modo:"demo",podeEditar:true});derivarPin(PIN_DEMO,"demo").then(h=>{estado.pinHash=h;estado.pinSal="demo";estado.pinVer=2;estado.pinCarregado=true;render()}).catch(()=>{estado.pinCarregado=true;render()});render()}
+const reserva=setTimeout(modoDemo,6000);
+
+function configOk(){const c=window.FIREBASE_CONFIG;return!!(window.firebase&&c&&c.apiKey&&c.projectId&&!/COLE|SEU_/i.test(c.apiKey+c.projectId))}
+const ehCoordenador=u=>{const lista=(window.COORDENADORES||[]).map(x=>String(x).toLowerCase().trim());return!!(u&&u.email&&lista.includes(u.email.toLowerCase()))};
+(async()=>{
+  if(!configOk()){clearTimeout(reserva);return modoDemo()}
+  clearTimeout(reserva);
+  try{firebase.initializeApp(window.FIREBASE_CONFIG)}catch(e){}
+  db=firebase.firestore();auth=firebase.auth();
+  try{await db.enablePersistence({synchronizeTabs:true})}catch(e){}
+  estado.modo="online";
+  let prontos=0;const pronto=()=>{if(++prontos>=1)render()};
+  const err=()=>{};
+  db.collection("equipes").onSnapshot({includeMetadataChanges:true},s=>{estado.offline=s.metadata.fromCache&&!navigator.onLine;estado.equipes=s.docs.map(d=>limpaEquipe(d.id,d.data())).filter(Boolean);pronto()},err);
+  db.collection("missas").onSnapshot(s=>{estado.missas=s.docs.map(d=>limpaMissa(d.id,d.data())).filter(Boolean);pronto()},err);
+  db.doc("config/horarios").onSnapshot(s=>{estado.horarios=s.exists&&Array.isArray(s.data().itens)?s.data().itens.map(limpaHorario).filter(Boolean).slice(0,40):[];render()},err);
+  let subsCoord=[];
+  auth.onAuthStateChanged(u=>{
+    subsCoord.forEach(f=>{try{f()}catch(e){}});subsCoord=[];
+    estado.usuario=u;estado.podeEditar=ehCoordenador(u);
+    if(!estado.podeEditar){estado.desbloqueado=false;estado.pinCarregado=false;estado.pinHash=null;estado.contatos={};ssSet("pastoral-coord","");render();return}
+    subsCoord.push(db.doc("seguranca/pin").onSnapshot(s=>{const d=s.exists?s.data():{};estado.pinHash=typeof d.hash==="string"?d.hash:null;estado.pinSal=typeof d.sal==="string"?d.sal:"";estado.pinVer=d.v===2?2:1;estado.pinCarregado=true;render()},()=>{estado.pinCarregado=true;render()}));
+    subsCoord.push(db.collection("contatos").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=txt(d.data().contato,20)});estado.contatos=m;render()},err));
+    render();
+  });
+  window.addEventListener("online",()=>{estado.offline=false;render()});
+  window.addEventListener("offline",()=>{estado.offline=true;render()});
+})();
+})();
+</script>
+</body>
+</html>

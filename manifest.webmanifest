@@ -1,0 +1,23 @@
+{
+  "name": "Pastoral da Música · Santa Luzia",
+  "short_name": "Pastoral",
+  "description": "Escala, equipes e avisos da Pastoral da Música da Paróquia Santa Luzia.",
+  "lang": "pt-BR",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFFFFF",
+  "theme_color": "#B0122B",
+  "categories": ["lifestyle", "productivity"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Escala", "url": "./#escala", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Avisos", "url": "./#avisos", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}
